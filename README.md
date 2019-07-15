@@ -106,7 +106,7 @@ Using a cron expression:
 import Cron from '@darkobits/cron';
 
 const task = async () => {
-  // Make the world a better place here.
+  // Save the whales here.
 };
 
 // Run at 12:00 on Wednesdays during every third month.
@@ -121,7 +121,7 @@ Setting up event handlers:
 import Cron from '@darkobits/cron';
 
 const task = async () => {
-  // Make the world a better place here.
+  // Prevent forest fires here.
 };
 
 const cron = Cron({delay: '10 seconds' task});
@@ -136,6 +136,8 @@ cron.on('task.start', () => {
 
 cron.on('task.end', result => {
   console.log('Task finished. Result:', result);
+  const nextRun = cron.timeToNextRun.humanized();
+  console.log(`Next run: ${nextRun}.`);
 });
 
 cron.on('suspend', () => {
