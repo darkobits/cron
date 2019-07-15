@@ -1,0 +1,45 @@
+{
+  "name": "@darkobits/cron",
+  "version": "0.1.0",
+  "description": "Execute a function on a schedule.",
+  "license": "WTFPL",
+  "author": "darkobits",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darkobits/cron.git"
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "keywords": [
+    "cron",
+    "crontab",
+    "schedule",
+    "task"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "nps build",
+    "test": "nps test",
+    "bump": "nps bump",
+    "prepare": "nps prepare"
+  },
+  "dependencies": {
+    "@darkobits/sleep": "^1.0.1",
+    "cron-parser": "^2.12.0",
+    "cronstrue": "^1.81.0",
+    "emittery": "^0.4.1",
+    "ms": "^2.1.2",
+    "pretty-ms": "^5.0.0"
+  },
+  "devDependencies": {
+    "@darkobits/log": "^1.2.3",
+    "@darkobits/ts-unified": "^3.0.2",
+    "@types/jest": "^24.0.15",
+    "@types/ms": "^0.7.30",
+    "mockdate": "^2.0.3"
+  }
+}

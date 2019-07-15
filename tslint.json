@@ -1,0 +1,10 @@
+{
+  "extends": "@darkobits/ts-unified/dist/config/tslint.json",
+  "rules": {
+    "member-ordering": false,
+    "no-http-string": false,
+    "no-redundant-jsdoc": false,
+    "prefer-conditional-expression": false,
+    "strict-type-predicates": false
+  }
+}
