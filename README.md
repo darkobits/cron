@@ -43,29 +43,40 @@ interface CronInstance {
   /**
    * Registers a listener for an event emitted by Cron.
    */
-  on(eventName: string, listener: (eventData?: any) => any): void;
+  on(eventName: CronEvent, listener: (eventData?: any) => any): void;
 
   /**
-   * Starts or re-starts the Cron. Returns a Promise that resolves when all
-   * handlers for the 'start' event have finished.
+   * If the Cron is suspended, starts the Cron, emits the "start" event, and
+   * resolves when all "start" event handlers have finished running.
+   *
+   * If the Cron is already running, resolves with `false`.
    */
   start(): Promise<void | boolean>;
 
   /**
-   * Suspends the Cron. Returns a Promise that resolves when all handlers for
-   * the 'suspend' event have finished.
+   * If the Cron is running, suspends the Cron, emits the "suspend" event, and
+   * resolves when all "suspend" event handlers have finished running.
+   *
+   * If the Cron is already suspended, resolves with `false`.
    */
   suspend(): Promise<void | boolean>;
 
   /**
    * When using a simple interval, returns the number of milliseconds between
-   * intervals. When using cron expressions, returns -1.
+   * intervals.
+   *
+   * When using a cron expression, returns -1, as intervals between runs may be
+   * variable.
    */
   getInterval: {
     (): number;
 
     /**
-     * Returns a string describing when tasks will run.
+     * Returns a string describing when tasks will run in humanized form.
+     *
+     * @example
+     *
+     * 'Every 30 minutes on Wednesdays.'
      */
     humanized(): string;
   };
@@ -73,11 +84,16 @@ interface CronInstance {
   /**
    * Returns the time remaining until the next task run begins in milliseconds.
    */
-  timeToNextRun: {
+  getTimeToNextRun: {
     (): number;
 
     /**
-     * Returns a string describing when the next task will run.
+     * Returns a string describing when the next task will run in humanized
+     * form.
+     *
+     * @example
+     *
+     * 'In 10 minutes.'
      */
     humanized(): string;
   };
@@ -136,16 +152,17 @@ cron.on('task.start', () => {
 
 cron.on('task.end', result => {
   console.log('Task finished. Result:', result);
-  const nextRun = cron.timeToNextRun.humanized();
+  const nextRun = cron.getTimeToNextRun.humanized();
   console.log(`Next run: ${nextRun}.`);
+});
+
+cron.on('error', err => {
+  console.log('Suspending Cron due to error:', err);
+  cron.suspend();
 });
 
 cron.on('suspend', () => {
   console.log('Cron was suspended.');
-});
-
-cron.on('error', err => {
-  console.log('Cron encountered an error:', err);
 });
 
 cron.start();

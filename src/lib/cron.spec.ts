@@ -147,7 +147,7 @@ describe('Cron', () => {
     });
   });
 
-  describe('#timeToNextRun', () => {
+  describe('#getTimeToNextRun', () => {
     beforeEach(() => {
       MockDate.set(0);
     });
@@ -155,7 +155,7 @@ describe('Cron', () => {
     it('should return the number of milliseconds until the next task run begins', async () => {
       const cron = Cron({delay: 500, task});
 
-      const result = cron.timeToNextRun();
+      const result = cron.getTimeToNextRun();
 
       expect(result).toBe(0);
 
@@ -165,13 +165,13 @@ describe('Cron', () => {
 
       await cron.suspend();
 
-      const result2 = cron.timeToNextRun();
+      const result2 = cron.getTimeToNextRun();
 
       expect(result2).toBe(500);
     });
   });
 
-  describe('#timeToNextRun.humanized', () => {
+  describe('#getTimeToNextRun.humanized', () => {
     beforeEach(() => {
       MockDate.set(0);
       jest.useFakeTimers();
@@ -181,7 +181,7 @@ describe('Cron', () => {
       // Every 4 hours.
       const cron = Cron({delay: '0 */4 * * *', task});
 
-      const result = cron.timeToNextRun.humanized();
+      const result = cron.getTimeToNextRun.humanized();
 
       expect(result).toBe('in 0 milliseconds');
 
@@ -193,7 +193,7 @@ describe('Cron', () => {
 
       await cron.suspend();
 
-      const result2 = cron.timeToNextRun.humanized();
+      const result2 = cron.getTimeToNextRun.humanized();
 
       expect(result2).toBe('in 30 minutes');
     });

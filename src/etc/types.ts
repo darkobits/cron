@@ -7,13 +7,11 @@ export type CronEvent = 'start' | 'suspend' | 'task.start' | 'task.end' | 'error
 /**
  * Function returned by `parseCronExpression`.
  */
-export interface NextFunction {
-  (): number;
+export interface ParsedExpression {
+  getNextInterval(): number;
   type: 'cron' | 'simple';
-  descriptor: {
-    ms: number;
-    humanized: string;
-  };
+  ms: number;
+  humanized: string;
 }
 
 
@@ -23,7 +21,7 @@ export interface NextFunction {
 export interface CronOptions {
   /**
    * Accepts either a simple interval expressed in milliseconds or as a string
-   * (ex: '10 minutes') or a cron expression (ex: '0 22 * * 1-5').
+   * (ex: 10000, '10 seconds') or a cron expression (ex: '0 22 * * 1-5').
    */
   delay: string | number;
 
@@ -44,26 +42,37 @@ export interface CronInstance {
   on(eventName: CronEvent, listener: (eventData?: any) => any): void;
 
   /**
-   * Starts or re-starts the Cron. Returns a Promise that resolves when all
-   * handlers for the 'start' event have finished.
+   * If the Cron is suspended, starts the Cron, emits the "start" event, and
+   * resolves when all "start" event handlers have finished running.
+   *
+   * If the Cron is already running, resolves with `false`.
    */
   start(): Promise<void | boolean>;
 
   /**
-   * Suspends the Cron. Returns a Promise that resolves when all handlers for
-   * the 'suspend' event have finished.
+   * If the Cron is running, suspends the Cron, emits the "suspend" event, and
+   * resolves when all "suspend" event handlers have finished running.
+   *
+   * If the Cron is already suspended, resolves with `false`.
    */
   suspend(): Promise<void | boolean>;
 
   /**
    * When using a simple interval, returns the number of milliseconds between
-   * intervals. When using cron expressions, returns -1.
+   * intervals.
+   *
+   * When using a cron expression, returns -1, as intervals between runs may be
+   * variable.
    */
   getInterval: {
     (): number;
 
     /**
-     * Returns a string describing when tasks will run.
+     * Returns a string describing when tasks will run in humanized form.
+     *
+     * @example
+     *
+     * 'Every 30 minutes on Wednesdays.'
      */
     humanized(): string;
   };
@@ -71,11 +80,16 @@ export interface CronInstance {
   /**
    * Returns the time remaining until the next task run begins in milliseconds.
    */
-  timeToNextRun: {
+  getTimeToNextRun: {
     (): number;
 
     /**
-     * Returns a string describing when the next task will run.
+     * Returns a string describing when the next task will run in humanized
+     * form.
+     *
+     * @example
+     *
+     * 'In 10 minutes.'
      */
     humanized(): string;
   };
