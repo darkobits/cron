@@ -5,6 +5,7 @@
     "no-http-string": false,
     "no-redundant-jsdoc": false,
     "prefer-conditional-expression": false,
+    "prefer-method-signature": false,
     "strict-type-predicates": false
   }
 }
