@@ -20,15 +20,16 @@ export interface ParsedExpression {
  */
 export interface CronOptions {
   /**
-   * Accepts either a simple interval expressed in milliseconds or as a string
-   * (ex: 10000, '10 seconds') or a cron expression (ex: '0 22 * * 1-5').
+   * Accepts either a simple interval expressed in milliseconds (ex: 10000) or a
+   * string describing an interval (ex: '10 seconds') or a cron expression
+   * (ex: '0 22 * * 1-5').
    */
   delay: string | number;
 
   /**
    * Function that will be called for each task run.
    */
-  task: Function;
+  task: (...args: Array<any>) => Promise<any> | any;
 }
 
 

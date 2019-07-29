@@ -24,15 +24,16 @@ This package's default export is a factory function that accepts an options obje
 ```ts
 interface CronOptions {
   /**
-   * Accepts either a simple interval expressed in milliseconds or as a string
-   * (ex: '10 minutes') or a cron expression (ex: '0 22 * * 1-5').
+   * Accepts either a simple interval expressed in milliseconds (ex: 10000) or a
+   * string describing an interval (ex: '10 seconds') or a cron expression
+   * (ex: '0 22 * * 1-5').
    */
   delay: string | number;
 
   /**
    * Function that will be called for each task run.
    */
-  task: Function;
+  task: (...args: Array<any>) => Promise<any> | any;
 }
 ```
 
@@ -100,6 +101,30 @@ interface CronInstance {
 }
 ```
 
+## Events
+
+Cron emits the following events:
+
+### `start`
+
+Emitted when the Cron is started.
+
+### `task.start`
+
+Emitted when a task is about to run.
+
+### `task.end`
+
+Emitted after a task finishes running. This callback will receive the return value of the task function.
+
+### `suspend`
+
+Emitted when the Cron is suspended.
+
+### `error`
+
+Emitted when the Cron (or a task) encounters an error. This callback will receive the error thrown.
+
 ## Example
 
 Using a simple interval:
@@ -111,7 +136,7 @@ const task = async () => {
   // Make the world a better place here.
 };
 
-const cron = Cron({delay: '10 seconds' task});
+const cron = Cron({delay: '10 seconds', task});
 
 cron.start();
 ```
@@ -126,7 +151,7 @@ const task = async () => {
 };
 
 // Run at 12:00 on Wednesdays during every third month.
-const cron = Cron({delay: '0 12 * */3 3' task});
+const cron = Cron({delay: '0 12 * */3 3', task});
 
 cron.start();
 ```
@@ -140,7 +165,7 @@ const task = async () => {
   // Prevent forest fires here.
 };
 
-const cron = Cron({delay: '10 seconds' task});
+const cron = Cron({delay: '10 seconds', task});
 
 cron.on('start', () => {
   console.log('Cron was started.');
