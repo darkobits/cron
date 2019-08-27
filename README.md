@@ -14,7 +14,7 @@ Cron is a utility that will run a function on an interval or according to a [cro
 # Install
 
 ```
-npm i -D @darkobits/cron
+npm i @darkobits/cron
 ```
 
 # Use
