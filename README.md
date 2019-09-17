@@ -52,7 +52,7 @@ interface CronInstance {
    *
    * If the Cron is already running, resolves with `false`.
    */
-  start(): Promise<void | boolean>;
+  start(): Promise<void | false>;
 
   /**
    * If the Cron is running, suspends the Cron, emits the "suspend" event, and
@@ -60,7 +60,7 @@ interface CronInstance {
    *
    * If the Cron is already suspended, resolves with `false`.
    */
-  suspend(): Promise<void | boolean>;
+  suspend(): Promise<void | false>;
 
   /**
    * When using a simple interval, returns the number of milliseconds between
@@ -100,6 +100,12 @@ interface CronInstance {
   };
 }
 ```
+
+## Simple Intervals vs. Cron Expressions
+
+When using a simple interval with Cron (ex: `10 seconds`), Cron will run its task, and then wait 10 seconds before running its task again. Therefore, if a task takes on average 20 seconds to complete, Cron will _start_ new task runs approximately every 30 seconds. This prevents concurrent task runs that may lead to race conditions or unintended side-effects.
+
+However, when using a cron expression (ex: `0 * * * *`, or every hour), Cron will _always_ begin a new task run at the top of the hour, whether or not the last task run has finished. It is therefore up to the developer to understand approximately how long their tasks take and how often to execute them to avoid concurrent task runs.
 
 ## Events
 
