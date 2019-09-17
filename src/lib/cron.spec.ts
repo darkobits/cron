@@ -118,7 +118,7 @@ describe('Cron', () => {
   });
 
   describe('#getInterval', () => {
-    describe('when using a crontab expression', () => {
+    describe('when using a cron expression', () => {
       it('should return -1', () => {
         const cron = Cron({delay: '* * * * *', task});
         const result = cron.getInterval();

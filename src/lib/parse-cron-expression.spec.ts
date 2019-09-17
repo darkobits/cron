@@ -60,7 +60,7 @@ describe('parseCronExpression', () => {
     });
   });
 
-  describe('when provided a crontab expression', () => {
+  describe('when provided a cron expression', () => {
     it('should parse the expression and return a function that returns the absolute start time of the next interval', () => {
       // Every other minute.
       const {getNextInterval} = parseCronExpression('*/2 * * * *');

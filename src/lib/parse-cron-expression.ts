@@ -9,7 +9,7 @@ import {lowercaseFirst} from 'lib/utils';
 
 
 /**
- * Provided a string representing either (a) a valid crontab expression or (b) a
+ * Provided a string representing either (a) a valid cron expression or (b) a
  * valid parse-able interval (ex: '10 seconds') returns a function that, when
  * invoked, will return a number representing the absolute time when the next
  * task run should begin.
