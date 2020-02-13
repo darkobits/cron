@@ -34,7 +34,7 @@
     "emittery": "^0.5.1",
     "ms": "^2.1.2",
     "ow": "^0.14.0",
-    "pretty-ms": "^5.0.0"
+    "pretty-ms": "^6.0.0"
   },
   "devDependencies": {
     "@darkobits/log": "^1.2.4",
