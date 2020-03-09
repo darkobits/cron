@@ -31,7 +31,7 @@
     "@darkobits/sleep": "^1.0.2",
     "cron-parser": "^2.13.0",
     "cronstrue": "^1.84.0",
-    "emittery": "^0.5.1",
+    "emittery": "^0.6.0",
     "ms": "^2.1.2",
     "ow": "^0.14.0",
     "pretty-ms": "^5.0.0"
