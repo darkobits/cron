@@ -36,14 +36,9 @@ export default function Cron(options: CronOptions): CronInstance {
 
 
   /**
-   * @private
-   *
-   * Function that will return the delay (in milliseconds) until we should run
-   * our task again.
+   * Object describing the cron/interval expression provided by the user.
    */
-  // let getNextRun: any;
-
-
+  // eslint-disable-next-line prefer-const -- Variable is re-defined below.
   let parsedExpression: ParsedExpression;
 
 
@@ -77,12 +72,13 @@ export default function Cron(options: CronOptions): CronInstance {
         // For 'simple' intervals, wait after running the task for the first
         // time to compute the time until the next run, then wait.
         if (parsedExpression.type === 'simple') {
+          // eslint-disable-next-line require-atomic-updates
           nextRun = parsedExpression.getNextInterval();
           await sleep(nextRun - Date.now());
         }
 
         // Schedule the next task.
-        run(); // tslint:disable-line no-floating-promises
+        void run();
       }
     }
   };
@@ -106,7 +102,7 @@ export default function Cron(options: CronOptions): CronInstance {
     if (!isRunning) {
       isRunning = true;
       await emitter.emit('start');
-      run(); // tslint:disable-line no-floating-promises
+      void run();
     }
 
     return false;

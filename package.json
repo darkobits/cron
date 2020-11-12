@@ -29,18 +29,18 @@
   },
   "dependencies": {
     "@darkobits/sleep": "^1.0.2",
-    "cron-parser": "^2.13.0",
-    "cronstrue": "^1.84.0",
-    "emittery": "^0.5.1",
+    "cron-parser": "^2.17.0",
+    "cronstrue": "^1.104.0",
+    "emittery": "^0.7.2",
     "ms": "^2.1.2",
-    "ow": "^0.14.0",
-    "pretty-ms": "^5.0.0"
+    "ow": "^0.19.0",
+    "pretty-ms": "^5.1.0"
   },
   "devDependencies": {
-    "@darkobits/log": "^1.2.4",
-    "@darkobits/ts-unified": "^3.2.3",
-    "@types/jest": "^24.0.20",
+    "@darkobits/log": "^1.2.5",
+    "@darkobits/ts-unified": "^6.0.0-beta.1",
+    "@types/jest": "^26.0.15",
     "@types/ms": "^0.7.31",
-    "mockdate": "^2.0.5"
+    "mockdate": "^3.0.2"
   }
 }

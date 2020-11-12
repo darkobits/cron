@@ -25,7 +25,7 @@ describe('parseCronExpression', () => {
   describe('when provided a simple interval', () => {
     describe('as a string', () => {
       it('should parse the string and return a function that returns the current time plus the interval', () => {
-        const {getNextInterval} = parseCronExpression('10 seconds');
+        const { getNextInterval } = parseCronExpression('10 seconds');
 
         // Expect the first call to return a timestamp 10 seconds from now.
         expect(getNextInterval()).toStrictEqual(10000);
@@ -33,7 +33,8 @@ describe('parseCronExpression', () => {
         // Advance time by 12 seconds.
         MockDate.set(12000);
 
-        // Expect the second call to also return a timestamp 10 seconds from now.
+        // Expect the second call to also return a timestamp 10 seconds from
+        // now.
         expect(getNextInterval()).toStrictEqual(22000);
       });
     });
@@ -48,7 +49,8 @@ describe('parseCronExpression', () => {
         // Advance time by 12 seconds.
         MockDate.set(12000);
 
-        // Expect the second call to also return a timestamp 10 seconds from now.
+        // Expect the second call to also return a timestamp 10 seconds from
+        // now.
         expect(getNextInterval()).toStrictEqual(22000);
       });
     });

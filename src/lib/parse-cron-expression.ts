@@ -17,7 +17,12 @@ import {lowercaseFirst} from 'lib/utils';
 export default function parseCronExpression(exp: string | number): ParsedExpression {
   ow(exp, 'first argument', ow.any(ow.number, ow.string));
 
-  let _err: Error;
+  /**
+   * @private
+   *
+   * Shared error used across multiple try/catch blocks.
+   */
+  let commonError: Error;
 
 
   // ----- [1] Attempt to Parse as Cron Expression -----------------------------
@@ -28,14 +33,14 @@ export default function parseCronExpression(exp: string | number): ParsedExpress
 
       return {
         getNextInterval: () => {
-          return cronInterval.next().toDate().valueOf(); // - Date.now();
+          return cronInterval.next().toDate().valueOf();
         },
         type: 'cron',
         ms: -1,
         humanized: lowercaseFirst(cronstrue.toString(exp))
       };
     } catch (err) {
-      _err = err;
+      commonError = err;
     }
   }
 
@@ -54,8 +59,8 @@ export default function parseCronExpression(exp: string | number): ParsedExpress
       humanized: `every ${prettyMs(simpleInterval, {secondsDecimalDigits: 0, verbose: true})}`
     };
   } catch (err) {
-    _err = err;
+    commonError = err;
   }
 
-  throw new Error(`Invalid expression: "${exp}": ${_err.message}`);
+  throw new Error(`Invalid expression: "${exp}": ${commonError.message}`);
 }
