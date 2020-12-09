@@ -1,12 +1,12 @@
 <a href="#top" id="top">
-  <a href="https://www.linguee.com/english-french/search?source=auto&query=cron"><img src="https://user-images.githubusercontent.com/441546/98965303-be4c7500-24be-11eb-9e07-f563f1cf5b61.png" style="max-width: 100%;"></a>
+  <a href="https://www.linguee.com/english-french/search?source=auto&query=cron"><img src="https://user-images.githubusercontent.com/441546/101615982-a683e600-39c3-11eb-9343-5dabc6b55ca1.png" style="max-width: 100%;"></a>
 </a>
 <p align="center">
   <a href="https://www.npmjs.com/package/@darkobits/cron"><img src="https://img.shields.io/npm/v/@darkobits/cron.svg?style=flat-square"></a>
   <a href="https://travis-ci.com/github/darkobits/cron"><img src="https://img.shields.io/travis/com/darkobits/cron?style=flat-square"></a>
   <a href="https://www.codacy.com/app/darkobits/cron"><img src="https://img.shields.io/codacy/coverage/eb849d4f9f20449aa80058a740b04278.svg?style=flat-square"></a>
   <a href="https://david-dm.org/darkobits/cron"><img src="https://img.shields.io/david/darkobits/cron.svg?style=flat-square"></a>
-  <a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/conventional%20commits-1.0.0-FB5E85.svg?style=flat-square"></a>
+  <a href="https://github.com/conventional-changelog/standard-version"><img src="https://img.shields.io/badge/conventional%20commits-1.0.0-027dc6.svg?style=flat-square"></a>
 </p>
 
 Cron is a utility that will run a function on an interval or according to a [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression).
