@@ -22,9 +22,6 @@
   ],
   "main": "dist/index.js",
   "scripts": {
-    "build": "nps build",
-    "test": "nps test",
-    "bump": "nps bump",
     "prepare": "nps prepare"
   },
   "dependencies": {
@@ -37,9 +34,7 @@
     "pretty-ms": "^5.1.0"
   },
   "devDependencies": {
-    "@darkobits/log": "^1.2.5",
-    "@darkobits/ts-unified": "^6.0.0-beta.1",
-    "@types/jest": "^26.0.15",
+    "@darkobits/ts": "^0.1.6",
     "@types/ms": "^0.7.31",
     "mockdate": "^3.0.2"
   }
