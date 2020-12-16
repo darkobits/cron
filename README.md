@@ -199,8 +199,6 @@ cron.on('suspend', () => {
 cron.start();
 ```
 
-## &nbsp;
-<p align="center">
-  <br>
-  <img width="22" height="22" src="https://cloud.githubusercontent.com/assets/441546/25318539/db2f4cf2-2845-11e7-8e10-ef97d91cd538.png">
-</p>
+<a href="#top">
+  <img src="https://user-images.githubusercontent.com/441546/102322726-5e6d4200-3f34-11eb-89f2-c31624ab7488.png" style="max-width: 100%;">
+</a>
