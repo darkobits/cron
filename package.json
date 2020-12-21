@@ -25,7 +25,7 @@
     "prepare": "nps prepare"
   },
   "dependencies": {
-    "@darkobits/sleep": "^1.0.2",
+    "@darkobits/sleep": "^1.0.3",
     "cron-parser": "^2.17.0",
     "cronstrue": "^1.104.0",
     "emittery": "^0.7.2",
@@ -34,7 +34,7 @@
     "pretty-ms": "^7.0.1"
   },
   "devDependencies": {
-    "@darkobits/ts": "^0.2.0",
+    "@darkobits/ts": "^0.2.2",
     "@types/ms": "^0.7.31",
     "mockdate": "^3.0.2"
   }
