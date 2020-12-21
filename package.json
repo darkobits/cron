@@ -1,6 +1,6 @@
 {
   "name": "@darkobits/cron",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Execute a function on a schedule.",
   "license": "WTFPL",
   "author": "darkobits",

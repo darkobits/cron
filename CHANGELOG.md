@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.9](https://github.com/darkobits/cron/compare/v0.2.8...v0.2.9) (2020-12-21)
+
+
+### 🏗 Chores
+
+* Update dependencies. ([fae8304](https://github.com/darkobits/cron/commit/fae83044ff6ec6356e2c311140aebb7e1db26d39))
+
 ### [0.2.8](https://github.com/darkobits/cron/compare/v0.2.7...v0.2.8) (2020-12-16)
 
 
