@@ -3,8 +3,8 @@
 </a>
 <p align="center">
   <a href="https://www.npmjs.com/package/@darkobits/cron"><img src="https://img.shields.io/npm/v/@darkobits/cron.svg?style=flat-square"></a>
-  <a href="https://travis-ci.com/github/darkobits/cron"><img src="https://img.shields.io/travis/com/darkobits/cron?style=flat-square"></a>
-  <a href="https://www.codacy.com/app/darkobits/cron"><img src="https://img.shields.io/codacy/coverage/eb849d4f9f20449aa80058a740b04278.svg?style=flat-square"></a>
+  <a href="https://github.com/darkobits/cron/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/darkobits/cron/CI/master?style=flat-square"></a>
+  <a href="https://app.codecov.io/gh/darkobits/cron/branch/master"><img src="https://img.shields.io/codecov/c/github/darkobits/cron/master?style=flat-square"></a>
   <a href="https://david-dm.org/darkobits/cron"><img src="https://img.shields.io/david/darkobits/cron.svg?style=flat-square"></a>
   <a href="https://github.com/conventional-changelog/standard-version"><img src="https://img.shields.io/badge/conventional%20commits-1.0.0-027dc6.svg?style=flat-square"></a>
 </p>
@@ -199,6 +199,7 @@ cron.on('suspend', () => {
 cron.start();
 ```
 
+<br />
 <a href="#top">
   <img src="https://user-images.githubusercontent.com/441546/102322726-5e6d4200-3f34-11eb-89f2-c31624ab7488.png" style="max-width: 100%;">
 </a>
