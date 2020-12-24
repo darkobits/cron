@@ -25,12 +25,12 @@
     "prepare": "nps prepare"
   },
   "dependencies": {
-    "@darkobits/sleep": "^1.0.3",
+    "@darkobits/sleep": "^1.0.4",
     "cron-parser": "^2.17.0",
     "cronstrue": "^1.104.0",
     "emittery": "^0.7.2",
     "ms": "^2.1.2",
-    "ow": "^0.20.0",
+    "ow": "^0.21.0",
     "pretty-ms": "^7.0.1"
   },
   "devDependencies": {
