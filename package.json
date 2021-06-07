@@ -30,7 +30,7 @@
     "cronstrue": "^1.113.0",
     "emittery": "^0.8.1",
     "ms": "^2.1.2",
-    "ow": "^0.23.0",
+    "ow": "^0.23.1",
     "pretty-ms": "^7.0.1"
   },
   "devDependencies": {
