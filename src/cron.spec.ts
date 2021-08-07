@@ -1,41 +1,38 @@
 import sleep from '@darkobits/sleep';
-import MockDate from 'mockdate';
+import { advanceTo } from 'jest-date-mock';
+
 import Cron from './cron';
 
-// const cron = Cron({delay: 10, task: jest.fn(() => {
-//   console.warn('TASK');
-// }});
-
-// jest.useFakeTimers();
-
-
 describe('Cron', () => {
-  const task = jest.fn(() => {
-    // console.warn('TASK');
-  });
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    // MockDate.set(0);
-  });
+  const task = jest.fn();
 
   describe('when provided invalid options', () => {
     it('should throw an error', () => {
       expect(() => {
-        // @ts-ignore
-        Cron({delay: false, task});
-      }).toThrow();
+        // @ts-expect-error
+        Cron.interval(false, task);
+      }).toThrow('Expected delay to be of type "string" or "number", got "boolean".');
 
       expect(() => {
-        // @ts-ignore
-        Cron({delay: 10, task: false});
-      }).toThrow();
+        // @ts-expect-error
+        Cron.interval(10, false);
+      }).toThrow('Expected task to be of type "function", got "boolean".');
+
+      expect(() => {
+        // @ts-expect-error
+        Cron(false, task);
+      }).toThrow('Expected expression to be of type "string", got "boolean".');
+
+      expect(() => {
+        // @ts-expect-error
+        Cron('0 0 0 0', false);
+      }).toThrow('Expected task to be of type "function", got "boolean".');
     });
   });
 
   describe('#on', () => {
     it('should register the provided handler with the provided event', async () => {
-      const cron = Cron({delay: 10, task});
+      const cron = Cron.interval(10, task);
       const cb = jest.fn();
       cron.on('start', cb);
       await cron.start();
@@ -46,9 +43,10 @@ describe('Cron', () => {
 
   describe('#start', () => {
     describe('when the Cron is not running', () => {
+      // Bad teardown.
       it('should start the Cron and emit the "start" event', async () => {
         const cb = jest.fn();
-        const cron = Cron({delay: 10, task});
+        const cron = Cron.interval(10, task);
         cron.on('start', cb);
 
         await cron.start();
@@ -68,7 +66,7 @@ describe('Cron', () => {
 
           const cb = jest.fn();
 
-          const cron = Cron({delay: 10, task: badTask});
+          const cron = Cron.interval(10, badTask);
           cron.on('error', cb);
 
           await cron.start();
@@ -82,7 +80,7 @@ describe('Cron', () => {
 
     describe('when the Cron is running', () => {
       it('should return false', async () => {
-        const cron = Cron({delay: 10, task: jest.fn()});
+        const cron = Cron.interval(10, jest.fn());
 
         await cron.start();
         const result = await cron.start();
@@ -97,7 +95,7 @@ describe('Cron', () => {
       it('should suspend the Cron and emit the "suspend" event', async () => {
         const cb = jest.fn();
 
-        const cron = Cron({delay: 10, task: jest.fn()});
+        const cron = Cron.interval(10, jest.fn());
         cron.on('suspend', cb);
 
         await cron.start();
@@ -109,7 +107,7 @@ describe('Cron', () => {
 
     describe('when the Cron is not running', () => {
       it('should return false', async () => {
-        const cron = Cron({delay: 10, task: jest.fn()});
+        const cron = Cron.interval(10, jest.fn());
         const result = await cron.suspend();
 
         expect(result).toBe(false);
@@ -120,7 +118,7 @@ describe('Cron', () => {
   describe('#getInterval', () => {
     describe('when using a cron expression', () => {
       it('should return -1', () => {
-        const cron = Cron({delay: '* * * * *', task});
+        const cron = Cron('* * * * *', task);
         const result = cron.getInterval();
         expect(result).toBe(-1);
       });
@@ -128,7 +126,7 @@ describe('Cron', () => {
 
     describe('when using a simple interval', () => {
       it('should return the number of milliseconds between intervals', () => {
-        const cron = Cron({delay: '10 seconds', task});
+        const cron = Cron.interval('10 seconds', task);
         const result = cron.getInterval();
         expect(result).toBe(10000);
       });
@@ -137,23 +135,21 @@ describe('Cron', () => {
 
   describe('#getInterval.humanized', () => {
     it('should return a description of the length of time between intervals', () => {
-      const cron = Cron({delay: '0 22 * * 1-5', task});
+      const cron = Cron('0 22 * * 1-5', task);
       const result = cron.getInterval.humanized();
       expect(result).toBe('at 10:00 PM, Monday through Friday');
 
-      const cron2 = Cron({delay: '10 seconds', task});
+      const cron2 = Cron.interval('10 seconds', task);
       const result2 = cron2.getInterval.humanized();
       expect(result2).toBe('every 10 seconds');
     });
   });
 
   describe('#getTimeToNextRun', () => {
-    beforeEach(() => {
-      MockDate.set(0);
-    });
-
     it('should return the number of milliseconds until the next task run begins', async () => {
-      const cron = Cron({delay: 500, task});
+      advanceTo(0);
+
+      const cron = Cron.interval(500, task);
 
       const result = cron.getTimeToNextRun();
 
@@ -171,15 +167,13 @@ describe('Cron', () => {
     });
   });
 
+  // Bad teardown.
   describe('#getTimeToNextRun.humanized', () => {
-    beforeEach(() => {
-      MockDate.set(0);
-      jest.useFakeTimers();
-    });
-
     it('should return a string describing the amount of time until the next task run begins', async () => {
+      advanceTo(0);
+
       // Every 4 hours.
-      const cron = Cron({delay: '0 */4 * * *', task});
+      const cron = Cron('0 */4 * * *', task);
 
       const result = cron.getTimeToNextRun.humanized();
 
@@ -188,8 +182,7 @@ describe('Cron', () => {
       await cron.start();
 
       // Advance time by 3.5 hours.
-      jest.advanceTimersByTime(1000 * 60 * 60 * 3.5);
-      MockDate.set(1000 * 60 * 60 * 3.5);
+      advanceTo(1000 * 60 * 60 * 3.5);
 
       await cron.suspend();
 

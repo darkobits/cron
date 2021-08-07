@@ -1,14 +1,20 @@
-module.exports = require('@darkobits/ts').jest({
-  coveragePathIgnorePatterns: [
-    '<rootDir>/src/lib/log',
-    '<rootDir>/src/test.ts'
-  ],
+import { jest } from '@darkobits/ts';
+
+export default jest({
+  // These two options are needed because we have tests that "don't exit
+  // properly". Setting these makes Jest behave as expected, but fails to reveal
+  // the source of the misbehaving test. This seems to be a common issue.
+  // See: https://github.com/facebook/jest/issues/6937
+  forceExit: true,
+  detectOpenHandles: true,
+
+  setupFiles: ['jest-date-mock'],
   coverageThreshold: {
     global: {
-      statements: 80,
-      branches: 65,
-      functions: 85,
-      lines: 80
+      statements: 100,
+      branches: 85,
+      functions: 100,
+      lines: 100
     }
   }
 });

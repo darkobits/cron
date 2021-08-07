@@ -6,6 +6,7 @@
   <a href="https://github.com/darkobits/cron/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/darkobits/cron/CI/master?style=flat-square"></a>
   <a href="https://app.codecov.io/gh/darkobits/cron/branch/master"><img src="https://img.shields.io/codecov/c/github/darkobits/cron/master?style=flat-square"></a>
   <a href="https://depfu.com/github/darkobits/cron"><img src="https://img.shields.io/depfu/darkobits/cron?style=flat-square"></a>
+  <a href="https://bundlephobia.com/package/@darkobits/cron"><img src="https://img.shields.io/bundlephobia/minzip/@darkobits/cron?label=size&style=flat-square"></a>
   <a href="https://conventionalcommits.org"><img src="https://img.shields.io/static/v1?label=commits&message=conventional&style=flat-square&color=398AFB"></a>
 </p>
 
@@ -19,28 +20,56 @@ npm i @darkobits/cron
 
 # Use
 
-This package's default export is a factory function that accepts an options object of the following shape:
+This package's default export is a function that may be used to create a `Cron`
+instance that executes a function according to a cron expression. Additionally,
+the `.interval` function may be used to create a Cron instance that executes a
+function at a fixed interval.
+
+## `cron()`
+
+This function accepts a cron expression and a function. It returns a `Cron`
+instance that will invoke the provided function according to the cron
+expression.
+
+**Example:**
 
 ```ts
-interface CronOptions {
-  /**
-   * Accepts either a simple interval expressed in milliseconds (ex: 10000) or a
-   * string describing an interval (ex: '10 seconds') or a cron expression
-   * (ex: '0 22 * * 1-5').
-   */
-  delay: string | number;
+import cron from '@darkobits/cron';
 
-  /**
-   * Function that will be called for each task run.
-   */
-  task: (...args: Array<any>) => Promise<any> | any;
-}
+// Run at 12:00 on Wednesdays every third month.
+cron('0 12 * */3 3', async () => {
+  // Save the whales here.
+});
 ```
 
-The object returned by Cron has the following shape:
+## `cron.interval()`
+
+This function accepts a number (milliseconds) or a string (parsed by `ms`)
+describing an interval and a function. It returns a `Cron` instance that calls
+the provided function according to the provided interval.
+
+**Example:**
+
+The following two invocations are functionally equivalent:
 
 ```ts
-interface CronInstance {
+import cron from '@darkobits/cron';
+
+cron.interval(5000, async () => {
+  // Make the world a better place here.
+});
+
+Cron.interval('5 seconds', async () => {
+  // Solve climate change here.
+});
+```
+
+## `Cron` Instance
+
+The object returned by either of these functions has the following shape:
+
+```ts
+interface Cron {
   /**
    * Registers a listener for an event emitted by Cron.
    */
@@ -52,7 +81,7 @@ interface CronInstance {
    *
    * If the Cron is already running, resolves with `false`.
    */
-  start(): Promise<void | false>;
+  start(eventData?: any): Promise<void | false>;
 
   /**
    * If the Cron is running, suspends the Cron, emits the "suspend" event, and
@@ -60,7 +89,7 @@ interface CronInstance {
    *
    * If the Cron is already suspended, resolves with `false`.
    */
-  suspend(): Promise<void | false>;
+  suspend(eventData?: any): Promise<void | false>;
 
   /**
    * When using a simple interval, returns the number of milliseconds between
@@ -101,15 +130,9 @@ interface CronInstance {
 }
 ```
 
-## Simple Intervals vs. Cron Expressions
-
-When using a simple interval with Cron (ex: `10 seconds`), Cron will run its task, and then wait 10 seconds before running its task again. Therefore, if a task takes on average 20 seconds to complete, Cron will _start_ new task runs approximately every 30 seconds. This prevents concurrent task runs that may lead to race conditions or unintended side-effects.
-
-However, when using a cron expression (ex: `0 * * * *`, or every hour), Cron will _always_ begin a new task run at the top of the hour, whether or not the last task run has finished. It is therefore up to the developer to understand approximately how long their tasks take and how often to execute them to avoid concurrent task runs.
-
 ## Events
 
-Cron emits the following events:
+A `Cron` instance emits the following lifecycle events:
 
 ### `start`
 
@@ -121,7 +144,8 @@ Emitted when a task is about to run.
 
 ### `task.end`
 
-Emitted after a task finishes running. This callback will receive the return value of the task function.
+Emitted after a task finishes running. This callback will receive the return
+value of the task function.
 
 ### `suspend`
 
@@ -129,74 +153,51 @@ Emitted when the Cron is suspended.
 
 ### `error`
 
-Emitted when the Cron (or a task) encounters an error. This callback will receive the error thrown.
+Emitted when the `Cron` (or a task) encounters an error. This callback will
+receive the error thrown.
 
-## Example
-
-Using a simple interval:
-
-```ts
-import Cron from '@darkobits/cron';
-
-const task = async () => {
-  // Make the world a better place here.
-};
-
-const cron = Cron({delay: '10 seconds', task});
-
-cron.start();
-```
-
-Using a cron expression:
+**Example:**
 
 ```ts
-import Cron from '@darkobits/cron';
+import cron from '@darkobits/cron';
 
-const task = async () => {
-  // Save the whales here.
-};
+const myCron = cron('10 seconds', async () => {
+  // Prevent California wildfires here.
+  return 'done';
+});
 
-// Run at 12:00 on Wednesdays during every third month.
-const cron = Cron({delay: '0 12 * */3 3', task});
-
-cron.start();
-```
-
-Setting up event handlers:
-
-```ts
-import Cron from '@darkobits/cron';
-
-const task = async () => {
-  // Prevent forest fires here.
-};
-
-const cron = Cron({delay: '10 seconds', task});
-
-cron.on('start', () => {
+myCron.on('start', () => {
   console.log('Cron was started.');
 });
 
-cron.on('task.start', () => {
+myCron.on('task.start', () => {
   console.log('Task was started');
 });
 
-cron.on('task.end', result => {
-  console.log('Task finished. Result:', result);
+myCron.on('task.end', result => {
+  console.log('Task finished. Result:', result); // => result == 'done'
   const nextRun = cron.getTimeToNextRun.humanized();
   console.log(`Next run: ${nextRun}.`);
 });
 
-cron.on('error', err => {
+// Here, we use the 'error' event to suspend the Cron and pass the error to the
+// 'suspend' handler.
+myCron.on('error', err => {
   console.log('Suspending Cron due to error:', err);
-  cron.suspend();
+  cron.suspend(err);
 });
 
-cron.on('suspend', () => {
+myCron.on('suspend', (eventData) => {
   console.log('Cron was suspended.');
+
+  if (eventData instanceof Error) {
+    // We suspended due to an error.
+  } else {
+    // We suspended normally.
+  }
 });
 
-cron.start();
+myCron.start();
 ```
 
 <br />

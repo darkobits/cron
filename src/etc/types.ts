@@ -4,37 +4,20 @@
 export type CronEvent = 'start' | 'suspend' | 'task.start' | 'task.end' | 'error';
 
 
-/**
- * Function returned by `parseCronExpression`.
- */
-export interface ParsedExpression {
+export type CronTask = (...args: Array<any>) => Promise<any> | any;
+
+
+export interface CronOptions {
+  type: 'cron' | 'interval';
   getNextInterval: () => number;
-  type: 'cron' | 'simple';
   ms: number;
   humanized: string;
+  task: CronTask;
 }
 
 
 /**
- * Options accepted by Cron.
- */
-export interface CronOptions {
-  /**
-   * Accepts either a simple interval expressed in milliseconds (ex: 10000) or a
-   * string describing an interval (ex: '10 seconds') or a cron expression
-   * (ex: '0 22 * * 1-5').
-   */
-  delay: string | number;
-
-  /**
-   * Function that will be called for each task run.
-   */
-  task: (...args: Array<any>) => Promise<any> | any;
-}
-
-
-/**
- * Object returned by Cron.
+ * Object returned by Cron.interval and Cron.expression.
  */
 export interface CronInstance {
   /**
@@ -48,7 +31,7 @@ export interface CronInstance {
    *
    * If the Cron is already running, resolves with `false`.
    */
-  start: () => Promise<void | boolean>;
+  start: (eventData?: any) => Promise<void | boolean>;
 
   /**
    * If the Cron is running, suspends the Cron, emits the "suspend" event, and
@@ -56,7 +39,7 @@ export interface CronInstance {
    *
    * If the Cron is already suspended, resolves with `false`.
    */
-  suspend: () => Promise<void | boolean>;
+  suspend: (eventData?: any) => Promise<void | boolean>;
 
   /**
    * When using a simple interval, returns the number of milliseconds between
