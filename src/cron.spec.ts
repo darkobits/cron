@@ -128,7 +128,7 @@ describe('Cron', () => {
       it('should return the number of milliseconds between intervals', () => {
         const cron = Cron.interval('10 seconds', task);
         const result = cron.getInterval();
-        expect(result).toBe(10000);
+        expect(result).toBe(10_000);
       });
     });
   });

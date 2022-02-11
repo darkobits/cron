@@ -1,3 +1,3 @@
 module.exports = {
-  extends: require('@darkobits/ts').eslint
+  extends: 'plugin:@darkobits/ts'
 };
