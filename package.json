@@ -4,6 +4,7 @@
   "description": "Execute a function on a schedule.",
   "author": "darkobits",
   "license": "WTFPL",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/darkobits/cron.git"
