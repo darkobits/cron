@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.1](https://github.com/darkobits/cron/compare/v1.0.0...v1.0.1) (2023-01-17)
+
+
+### 🛠 Refactoring
+
+* Publish as ESM. ([fa53929](https://github.com/darkobits/cron/commit/fa5392969ec90dc4ddd3f1da4ab757813417ad31))
+
+
+### 📖 Documentation
+
+* Update README. ([dd5b94e](https://github.com/darkobits/cron/commit/dd5b94ea9df68ae10465258c920895f28b5c06d2))
+
+
+### 🏗 Chores
+
+* **deps:** Update dependencies. ([ad8973b](https://github.com/darkobits/cron/commit/ad8973b731be719c70f594306e7fd72483e88788))
+* Update ci.yml. ([9879327](https://github.com/darkobits/cron/commit/98793279d5a6c891c9be611fe37c27a4410fcc72))
+* Update dependencies. ([7a3fcab](https://github.com/darkobits/cron/commit/7a3fcabde603d81ce9f9af26ebb5e79871e1c9fe))
+
 ## [1.0.0](https://github.com/darkobits/cron/compare/v0.2.10...v1.0.0) (2021-08-07)
 
 
