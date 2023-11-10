@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.2](https://github.com/darkobits/cron/compare/v1.0.1...v1.0.2) (2023-11-10)
+
+
+### 🏗 Chores
+
+* **deps:** Update dependencies. ([a54694c](https://github.com/darkobits/cron/commit/a54694c013448db663c2ebb1bf0b666aa4dbf414))
+* Update `.cy.cml`. ([22a1bd0](https://github.com/darkobits/cron/commit/22a1bd0ae70edf3f979330ba24f8feaddd4e7e04))
+* Update license. ([a30a38e](https://github.com/darkobits/cron/commit/a30a38e681f6ee93bb0ba31f43a7c6d4b2ce0aa1))
+
 ## [1.0.1](https://github.com/darkobits/cron/compare/v1.0.0...v1.0.1) (2023-01-17)
 
 
