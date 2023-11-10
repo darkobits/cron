@@ -1,10 +1,11 @@
 import sleep from '@darkobits/sleep';
-import { advanceTo } from 'jest-date-mock';
+import { describe, it, expect, vi } from 'vitest';
 
 import Cron from './cron';
 
+
 describe('Cron', () => {
-  const task = jest.fn();
+  const task = vi.fn();
 
   describe('when provided invalid options', () => {
     it('should throw an error', () => {
@@ -33,7 +34,7 @@ describe('Cron', () => {
   describe('#on', () => {
     it('should register the provided handler with the provided event', async () => {
       const cron = Cron.interval(10, task);
-      const cb = jest.fn();
+      const cb = vi.fn();
       cron.on('start', cb);
       await cron.start();
       expect(cb).toHaveBeenCalledTimes(1);
@@ -45,26 +46,29 @@ describe('Cron', () => {
     describe('when the Cron is not running', () => {
       // Bad teardown.
       it('should start the Cron and emit the "start" event', async () => {
-        const cb = jest.fn();
+        const onStart = vi.fn();
+
         const cron = Cron.interval(10, task);
-        cron.on('start', cb);
+
+        cron.on('start', onStart);
 
         await cron.start();
-        await cron.suspend();
 
-        expect(cb).toHaveBeenCalledTimes(1);
+        expect(onStart).toHaveBeenCalledTimes(1);
         expect(task).toHaveBeenCalledTimes(1);
+
+        await cron.suspend();
       });
 
       describe('when the task throws an error', () => {
         it('should emit the "error" event', async () => {
           const err = new Error('oops');
 
-          const badTask = jest.fn(() => {
+          const badTask = vi.fn(() => {
             throw err;
           });
 
-          const cb = jest.fn();
+          const cb = vi.fn();
 
           const cron = Cron.interval(10, badTask);
           cron.on('error', cb);
@@ -80,7 +84,7 @@ describe('Cron', () => {
 
     describe('when the Cron is running', () => {
       it('should return false', async () => {
-        const cron = Cron.interval(10, jest.fn());
+        const cron = Cron.interval(10, vi.fn());
 
         await cron.start();
         const result = await cron.start();
@@ -93,9 +97,9 @@ describe('Cron', () => {
   describe('#suspend', () => {
     describe('when the Cron is running', () => {
       it('should suspend the Cron and emit the "suspend" event', async () => {
-        const cb = jest.fn();
+        const cb = vi.fn();
 
-        const cron = Cron.interval(10, jest.fn());
+        const cron = Cron.interval(10, vi.fn());
         cron.on('suspend', cb);
 
         await cron.start();
@@ -107,7 +111,7 @@ describe('Cron', () => {
 
     describe('when the Cron is not running', () => {
       it('should return false', async () => {
-        const cron = Cron.interval(10, jest.fn());
+        const cron = Cron.interval(10, vi.fn());
         const result = await cron.suspend();
 
         expect(result).toBe(false);
@@ -147,48 +151,46 @@ describe('Cron', () => {
 
   describe('#getTimeToNextRun', () => {
     it('should return the number of milliseconds until the next task run begins', async () => {
-      advanceTo(0);
+      vi.useFakeTimers();
+      vi.setSystemTime(0);
 
       const cron = Cron.interval(500, task);
 
-      const result = cron.getTimeToNextRun();
-
-      expect(result).toBe(0);
+      expect(cron.getTimeToNextRun()).toBe(0);
 
       await cron.start();
 
+      vi.useRealTimers();
       await sleep(750);
 
+      // We get a slight amount of drift on this test, but it should be around
+      // 250ms.
+      expect(cron.getTimeToNextRun()).toBeGreaterThan(240);
+      expect(cron.getTimeToNextRun()).toBeLessThan(260);
+
       await cron.suspend();
-
-      const result2 = cron.getTimeToNextRun();
-
-      expect(result2).toBe(500);
     });
   });
 
   // Bad teardown.
   describe('#getTimeToNextRun.humanized', () => {
     it('should return a string describing the amount of time until the next task run begins', async () => {
-      advanceTo(0);
+      vi.useFakeTimers();
+      vi.setSystemTime(0);
 
       // Every 4 hours.
       const cron = Cron('0 */4 * * *', task);
 
-      const result = cron.getTimeToNextRun.humanized();
-
-      expect(result).toBe('in 0 milliseconds');
+      expect(cron.getTimeToNextRun.humanized()).toBe('in 0 milliseconds');
 
       await cron.start();
 
       // Advance time by 3.5 hours.
-      advanceTo(1000 * 60 * 60 * 3.5);
+      vi.setSystemTime(1000 * 60 * 60 * 3.5);
+
+      expect(cron.getTimeToNextRun.humanized()).toBe('in 30 minutes');
 
       await cron.suspend();
-
-      const result2 = cron.getTimeToNextRun.humanized();
-
-      expect(result2).toBe('in 30 minutes');
     });
   });
 });
