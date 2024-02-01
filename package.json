@@ -23,13 +23,13 @@
   "dependencies": {
     "@darkobits/sleep": "^3.0.0",
     "cron-parser": "^4.9.0",
-    "cronstrue": "^2.41.0",
-    "emittery": "^1.0.1",
+    "cronstrue": "^2.47.0",
+    "emittery": "^1.0.2",
     "ms": "^2.1.3",
-    "pretty-ms": "^8.0.0"
+    "pretty-ms": "^9.0.0"
   },
   "devDependencies": {
-    "@darkobits/ts": "^0.18.12",
+    "@darkobits/ts": "^0.20.4",
     "@types/ms": "^0.7.34"
   },
   "keywords": [

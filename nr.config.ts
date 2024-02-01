@@ -1,3 +1,1 @@
-import { withDefaultPackageScripts } from '@darkobits/ts';
-
-export default withDefaultPackageScripts();
+export { defaultPackageScripts as default } from '@darkobits/ts';
